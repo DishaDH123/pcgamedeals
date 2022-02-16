@@ -48,9 +48,12 @@ y
 
 
 ```{r}
-request <- function(){
+```
 
-  cat("Please select a Store Number from below options \n")
+
+```{r}
+response <- function(){
+cat("Please select a Store Number from below options \n")
   
   for (i in 1:nrow(y))
     {
@@ -59,26 +62,39 @@ request <- function(){
   
   val <- readline("Enter value here: ")
   val <- as.integer(val)
-  
-  bud <- readline("Enter your budget: ")
-  bud <- as.integer(bud)
-  
-  data <- get_game_deals_df(val,bud)
-  
+  cat("Select what you want from the below options:\n 1. Game within a budget\n2.Savings and current deal rating\n3.Games above a certain rating")
+  opt <- readline("Enter your choice")
+  opt <- as.integer(opt)
+  if(opt==1){
+      bud <- readline("Enter your budget: ")
+      bud <- as.integer(bud)
+      data <- get_game_deals_df(val,bud)
+  }
+  else if(opt==2){
+      
+  }
+  else if(opt==3){
+      rat <- readline("Enter the maximum percentage of rating required: ")
+      rat <- as.integer(rat)
+      ratings <- get_game_reviews_df(val,rat)
+      
+  }
+  else {
+      cat("You did not enter a valid input\n")
+      break
+  }
 }
-  
-
-
 ```
 
-
+```{r}
+response()
+```
 
 ```{r}
 
-request()
+response()
 
 ```
-
 
 ```{r}
 get_game_deals_df <- function(storeID, price_limit) {
@@ -106,6 +122,28 @@ get_game_deals_df <- function(storeID, price_limit) {
 }
 
 #get_game_deals_df(3,20)
+```
+```{r}
+get_game_reviews_df <- function(storeID, rating) {
+    
+    url <- paste0("https://www.cheapshark.com/api/1.0/deals?storeID=", storeID, "&metacritic=", rating)
+    
+    g <- GET(url)
+        if (status_code(g) != 200) {
+            stop(paste("There was an error with the API. The reponse status is:", status_code(g)))
+            }
+            
+    deals <- content(g, "parsed")
+    
+    df <- deals %>% 
+            bind_rows%>%
+            select(title, metacriticScore)%>%
+            mutate(metacriticScore = as.numeric(metacriticScore))
+    
+    return(df)
+    
+}
+
 ```
 
 
