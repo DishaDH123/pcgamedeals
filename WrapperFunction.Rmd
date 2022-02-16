@@ -71,6 +71,7 @@ cat("Please select a Store Number from below options \n")
   else if(opt==2){
       cat("Displaying top 10 games with high savings and their corresponding rating")
       deal <- get_savings_deals_df(val)
+      options(repr.plot.width=10, repr.plot.height=25)
       deal %>% arrange(desc(dealRating)) %>% head(10) %>%
       ggplot()+
       aes(
@@ -90,6 +91,7 @@ cat("Please select a Store Number from below options \n")
       rat <- readline("Enter the maximum percentage of rating required: ")
       rat <- as.integer(rat)
       ratings <- get_game_reviews_df(val,rat)
+      options(repr.plot.width=10, repr.plot.height=25)
       ratings %>% arrange(desc(metacriticScore)) %>% head(10) %>%
       ggplot() + aes(x=title,y=metacriticScore) + geom_bar(stat="identity") + 
         ggtitle("Top 10 stores having expected reviews") +
