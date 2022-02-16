@@ -23,7 +23,18 @@ library(ggplot2)
 ```{r}
 
 get_active_stores <- function() {
-    
+  #' @title Get the active store IDs and the Store names
+  #' 
+  #' @description This function fetches all the active store IDs 
+  #' and the store names in the API
+
+  #' @return A dataframe with currently active stores and the store IDs being monitored by the API
+ 
+
+  #' @examples
+  #' get_active_stores()
+  
+  
     stores <- GET("https://www.cheapshark.com/api/1.0/stores")
    
         if (status_code(stores) != 200) {
@@ -110,7 +121,7 @@ cat("Please select a Store Number from below options \n")
 ```
 
 ```{r}
-response()
+response()1
 ```
 
 
