@@ -15,6 +15,7 @@ library(jsonlite)
 library(rjson)
 library(dplyr)
 library(tidyverse)
+library(ggplot2)
 ```
 
 
@@ -63,7 +64,7 @@ cat("Please select a Store Number from below options \n")
   val <- readline("Enter value here: ")
   val <- as.integer(val)
   cat("Select what you want from the below options:\n 1. Game within a budget\n2.Savings and current deal rating\n3.Games above a certain rating")
-  opt <- readline("Enter your choice")
+  opt <- readline("Enter your choice : ")
   opt <- as.integer(opt)
   if(opt==1){
       bud <- readline("Enter your budget: ")
@@ -71,7 +72,22 @@ cat("Please select a Store Number from below options \n")
       data <- get_game_deals_df(val,bud)
   }
   else if(opt==2){
-      
+      cat("Displaying top 10 games with high savings and their corresponding rating")
+      deal <- get_savings_deals_df(val)
+      deal %>% arrange(desc(savings)) %>% head(10) %>%
+      ggplot()+
+      aes(
+        x=title,
+        y=dealRating,
+        color=savings
+      )+
+      geom_point()+
+      labs(x="Game",y='Rating',title='Top 10 games with high savings')+
+      theme_bw()+
+      theme(axis.text.x = element_text(angle = 60,hjust=1,face='bold',size=10),
+            axis.text.y = element_text(face='bold',size=10),
+            axis.title = element_text(face='bold',size=15),
+            plot.title = element_text(face='bold',size=20))
   }
   else if(opt==3){
       rat <- readline("Enter the maximum percentage of rating required: ")
@@ -90,11 +106,6 @@ cat("Please select a Store Number from below options \n")
 response()
 ```
 
-```{r}
-
-response()
-
-```
 
 ```{r}
 get_game_deals_df <- function(storeID, price_limit) {
@@ -146,6 +157,30 @@ get_game_reviews_df <- function(storeID, rating) {
 
 ```
 
+```{r}
+get_savings_deals_df <- function(storeID) {
+    
+    url <- paste0("https://www.cheapshark.com/api/1.0/deals?storeID=", storeID)
+    
+    g <- GET(url)
+        if (status_code(g) != 200) {
+            stop(paste("There was an error with the API. The reponse status is:", status_code(g)))
+            }
+            
+    deals <- content(g, "parsed")
+    
+    df <- deals %>% 
+            bind_rows%>%
+            select(title, storeID, normalPrice, salePrice, savings, dealRating)%>%
+            mutate(normalPrice = as.numeric(normalPrice), 
+                   salePrice = as.numeric(salePrice), 
+                   savings = as.numeric(savings), 
+                   dealRating = as.numeric(dealRating))
+    
+    df
+    
+}
+```
 
 
 
