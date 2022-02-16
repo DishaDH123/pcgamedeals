@@ -17,35 +17,7 @@ library(dplyr)
 library(tidyverse)
 ```
 
-```{r}
 
-get_game_deals_df <- function(storeID, price_limit) {
-    
-    url <- paste0("https://www.cheapshark.com/api/1.0/deals?storeID=", storeID, "&upperPrice=", price_limit)
-    
-    g <- GET(url)
-        if (status_code(g) != 200) {
-            stop(paste("There was an error with the API. The reponse status is:", status_code(g)))
-            }
-            
-    deals <- content(g, "parsed")
-    
-    df <- deals %>% 
-            bind_rows%>%
-            select(title, storeID, normalPrice, salePrice, savings, dealRating)%>%
-            mutate(normalPrice = as.numeric(normalPrice), 
-                   salePrice = as.numeric(salePrice), 
-                   savings = as.numeric(savings), 
-                   dealRating = as.numeric(dealRating), 
-                   storeID = as.numeric(storeID))
-    
-    df
-    
-}
-
-get_game_deals_df(3,20)
-
-```
 
 ```{r}
 
@@ -73,6 +45,74 @@ get_active_stores <- function() {
 y <- get_active_stores()
 y
 ```
+
+
+```{r}
+request <- function(){
+
+  cat("Please select a Store Number from below options \n")
+  
+  for (i in 1:nrow(y))
+    {
+    cat(y$storeName[i],":", y$storeID[i],"\n")
+    }
+  
+  val <- readline("Enter value here: ")
+  val <- as.integer(val)
+  
+  bud <- readline("Enter your budget: ")
+  bud <- as.integer(bud)
+  
+  data <- get_game_deals_df(val,bud)
+  
+}
+  
+
+
+```
+
+
+
+```{r}
+
+request()
+
+```
+
+
+```{r}
+get_game_deals_df <- function(storeID, price_limit) {
+    
+    url <- paste0("https://www.cheapshark.com/api/1.0/deals?storeID=", storeID, "&upperPrice=", price_limit)
+    
+    g <- GET(url)
+        if (status_code(g) != 200) {
+            stop(paste("There was an error with the API. The reponse status is:", status_code(g)))
+            }
+            
+    deals <- content(g, "parsed")
+    
+    df <- deals %>% 
+            bind_rows%>%
+            select(title, storeID, normalPrice, salePrice, savings, dealRating)%>%
+            mutate(normalPrice = as.numeric(normalPrice), 
+                   salePrice = as.numeric(salePrice), 
+                   savings = as.numeric(savings), 
+                   dealRating = as.numeric(dealRating), 
+                   storeID = as.numeric(storeID))
+    
+    df
+    
+}
+
+#get_game_deals_df(3,20)
+```
+
+
+
+
+
+
 
 ```{r}
 is_active <- function (x) {
