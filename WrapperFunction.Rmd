@@ -66,16 +66,17 @@ cat("Please select a Store Number from below options \n")
       bud <- readline("Enter your budget: ")
       bud <- as.integer(bud)
       data <- get_game_deals_df(val,bud)
+      
   }
   else if(opt==2){
       cat("Displaying top 10 games with high savings and their corresponding rating")
       deal <- get_savings_deals_df(val)
-      deal %>% arrange(desc(savings)) %>% head(10) %>%
+      deal %>% arrange(desc(dealRating)) %>% head(10) %>%
       ggplot()+
       aes(
         x=title,
-        y=dealRating,
-        color=savings
+        y=savings,
+        color=dealRating
       )+
       geom_point()+
       labs(x="Game",y='Rating',title='Top 10 games with high savings')+
@@ -92,7 +93,7 @@ cat("Please select a Store Number from below options \n")
       ratings %>% arrange(desc(metacriticScore)) %>% head(10) %>%
       ggplot() + aes(x=title,y=metacriticScore) + geom_bar(stat="identity") + 
         ggtitle("Top 10 stores having expected reviews") +
-        xlab("Company names") + ylab("Ratings") + theme_bw()
+        xlab("Company names") + ylab("Ratings") + theme_bw()+
         theme(axis.text.x = element_text(angle = 60,hjust=1,face='bold',size=10),
             axis.text.y = element_text(face='bold',size=10),
             axis.title = element_text(face='bold',size=15),
