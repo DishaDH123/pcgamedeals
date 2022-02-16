@@ -1,0 +1,90 @@
+---
+title: "For Project"
+author: "Kristy Phipps - 85842052"
+date: "15/02/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(httr)
+library(jsonlite)
+library(rjson)
+library(dplyr)
+library(tidyverse)
+```
+
+```{r}
+
+get_game_deals_df <- function(storeID, price_limit) {
+    
+    url <- paste0("https://www.cheapshark.com/api/1.0/deals?storeID=", storeID, "&upperPrice=", price_limit)
+    
+    g <- GET(url)
+        if (status_code(g) != 200) {
+            stop(paste("There was an error with the API. The reponse status is:", status_code(g)))
+            }
+            
+    deals <- content(g, "parsed")
+    
+    df <- deals %>% 
+            bind_rows%>%
+            select(title, storeID, normalPrice, salePrice, savings, dealRating)%>%
+            mutate(normalPrice = as.numeric(normalPrice), 
+                   salePrice = as.numeric(salePrice), 
+                   savings = as.numeric(savings), 
+                   dealRating = as.numeric(dealRating), 
+                   storeID = as.numeric(storeID))
+    
+    df
+    
+}
+
+get_game_deals_df(3,20)
+
+```
+
+```{r}
+
+get_active_stores <- function() {
+    
+    stores <- GET("https://www.cheapshark.com/api/1.0/stores")
+   
+        if (status_code(stores) != 200) {
+            stop(paste("There was an error with the API. The reponse status is:", status_code(g)))
+            }
+     
+    s <- content(stores, "parsed")       
+    
+    df <- s %>% 
+          bind_rows %>% 
+          filter(isActive == 1) %>%
+          select(storeName, storeID) %>%
+          distinct() %>%
+          mutate(storeID = as.numeric(storeID))
+    
+    df
+    
+}
+
+y <- get_active_stores()
+y
+```
+
+```{r}
+is_active <- function (x) {
+    
+    if (x %in% y$storeID){
+        print("ok")
+    }
+    else{
+        print("Nope!")
+    }
+}
+is_active(4)
+
+
+```
