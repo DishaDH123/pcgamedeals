@@ -49,10 +49,6 @@ y
 
 
 ```{r}
-```
-
-
-```{r}
 response <- function(){
 cat("Please select a Store Number from below options \n")
   
@@ -93,6 +89,14 @@ cat("Please select a Store Number from below options \n")
       rat <- readline("Enter the maximum percentage of rating required: ")
       rat <- as.integer(rat)
       ratings <- get_game_reviews_df(val,rat)
+      ratings %>% arrange(desc(metacriticScore)) %>% head(10) %>%
+      ggplot() + aes(x=title,y=metacriticScore) + geom_bar(stat="identity") + 
+        ggtitle("Top 10 stores having expected reviews") +
+        xlab("Company names") + ylab("Ratings") + theme_bw()
+        theme(axis.text.x = element_text(angle = 60,hjust=1,face='bold',size=10),
+            axis.text.y = element_text(face='bold',size=10),
+            axis.title = element_text(face='bold',size=15),
+            plot.title = element_text(face='bold',size=20))
       
   }
   else {
