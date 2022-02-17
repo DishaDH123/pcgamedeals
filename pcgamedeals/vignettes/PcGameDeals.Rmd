@@ -24,3 +24,45 @@ library(pcgamedeals)
 response()
 
 ```
+
+## Overview
+
+This package is designed to allow users to more easily query the Cheap Shark API which collects information on current PC game deals. This API has a lot of information available, but most users may not be interested in all of the data available. This package is not exhaustive, but is intended to give users some useful custom functions that will allow them to access interesting consumer information quickly and easily. 
+
+Below is a quick overview of the five functions currently available in this package.
+
+### get_active_stores()
+
+Cheap Shark monitors PC game prices across a variety of vendors and platforms. However, at any one time, only a subset of the entire store listing is being actively monitored. Therefore, this function is designed to retrieve information on all the stores that are being actively monitored at the time the function is called. This function does not take any arguments and will return a small two column data frame, with store names and the associated store ID. 
+
+Running this function is recommended to check if your favorite store is being actively monitored. If it is, you should use the StoreID information provided from this function with some of the other functions in this package to find some great games!
+
+### get_game_deals_df()
+
+This function is designed to retrieve all the the current deals from a particular online store or game vendor under a certain price limit. This function takes two arguments, storeID and price_limit. You can use the get_active_stores() function from above to identify what stores are currently active and the associated storeID for the store you are interested in querying. The price_limit argument is the upper price range (based on the sale price, not the original price) that you wish to spend. Perfect for gamers on a budget!!
+
+The function will return a data frame with pre-selected 6 columns and all the results from that particular store and and under the specified price limits. The columns included in the data frame include game title, store ID, regular price, sale price, savings (as percentage off), and deal rating (as identified by Cheap Shark). 
+
+### get_game_reviews_df()
+
+This function is designed to retrieve all the the current deals from a particular online store or game vendor with a specific metacritic rating level. This function takes two arguments, storeID and rating. Again, the get_active_stores() function from above can be used to identify what stores are currently active and their names. The rating argument is based on metacritic ratings for games, which are rated on a scale of 1 to 10. This is a great function for gamers who want to see the highest rated games! 
+
+The function will return a data frame with 2 columns and all the results from that particular store that are above the rating threshold given by the user. The columns included in the data frame include game title and metacritic score. 
+
+### get_deals_by_store_df()
+
+This function is designed to retrieve all the the current deals from a particular online store without any restrictions. This function takes one argument the storeID. It is recommended to use the get_active_stores() function from above to identify what stores are currently active and their names. This is a great function for gamers who want to see all the deals thier favorite store has to offer. 
+
+The function will return a data frame with pre-selected 6 columns and all the results from that particular store. The columns included in the data frame include game title, store ID, regular price, sale price, savings (as percentage off), and deal rating (as identified by Cheap Shark). 
+
+### response()
+
+All these functions are awesome right? But what if you are feeling lazy and don't want to do any work?! Guess what... we can do all the heavy lifting for you! All you need to do is use the response function. It doesn't take any arguments to run, but instead will prompt you directly for any information that's needed, plus it will give you a cool graph in the end summarizing the top 10 results based on your input - sweet!!
+
+
+
+
+
+
+
+
