@@ -21,7 +21,7 @@ library(ggplot2)
 
 
 ```{r}
-
+#' @export
 get_active_stores <- function() {
   #' @title Active store IDs and Store names
   #' 
@@ -58,8 +58,25 @@ get_active_stores <- function() {
 
 
 ```{r}
+#' @export
 get_game_deals_df <- function(storeID, price_limit) {
-    
+  
+  #' @title Get details about a store's game deals
+  #' 
+  #' @description This function fetches all the details about a
+  #' store's on going deals on games with the mentioned price limit
+  
+  #' @param storeID integer. The store ID mentioned by the user
+  #' @param price_limit integer. The budget entered by the user
+  
+  #' @return A dataframe containing a store's title, ID, 
+  #' the actual price of the game, the sale price of the game, 
+  #' the percentage of savings on purchase and the rating of the deal.
+ 
+
+  #' @examples
+  #' get_active_stores(1,800) 
+  
     url <- paste0("https://www.cheapshark.com/api/1.0/deals?storeID=", storeID, "&upperPrice=", price_limit)
     
     g <- GET(url)
@@ -85,8 +102,23 @@ get_game_deals_df <- function(storeID, price_limit) {
 ```
 
 ```{r}
+#' @export
 get_game_reviews_df <- function(storeID, rating) {
-    
+  #' @title Get details about a store's game reviews
+  #' 
+  #' @description This function fetches the rating for 
+  #' all the games in a store
+  
+  #' @param storeID integer. The store ID mentioned by the user
+  #' @param rating integer. The minimum rating mentioned by the user
+  
+  #' @return A dataframe containing the name of the game 
+  #' and the meta critic score of the game.
+  #'The meta critic score will be above the one mentioned by the user.
+ 
+
+  #' @examples
+  #' get_active_stores(31,80)
     url <- paste0("https://www.cheapshark.com/api/1.0/deals?storeID=", storeID, "&metacritic=", rating)
     
     g <- GET(url)
@@ -108,8 +140,21 @@ get_game_reviews_df <- function(storeID, rating) {
 ```
 
 ```{r}
-get_savings_deals_df <- function(storeID) {
-    
+#' @export
+get_deals_by_store_df <- function(storeID) {
+  #' @title Get details about a store's maximum deals 
+  #' 
+  #' @description This function fetches the details 
+  #' about the given store
+  
+  #' @param storeID integer. The store ID mentioned by the user
+  
+  #' @return A dataframe containing the name of the game,
+  #' the store ID, the normal price of a game, the sale price on a game,
+  #' the savings and the deal rating off the game.
+
+  #' @examples
+  #' get_active_stores(28)
     url <- paste0("https://www.cheapshark.com/api/1.0/deals?storeID=", storeID)
     
     g <- GET(url)
@@ -130,11 +175,6 @@ get_savings_deals_df <- function(storeID) {
     df
     
 }
-```
-
-```{r}
-#y <- get_active_stores()  
-#y
 ```
 
 
@@ -197,7 +237,7 @@ cat("Please select a Store Number from below options \n")
   }
   else if(opt==2){
       cat("Displaying top 10 games with high savings and their corresponding rating")
-      deal <- get_savings_deals_df(val)
+      deal <- get_deals_by_store_df(val)
       options(repr.plot.width=10, repr.plot.height=25)
       deal %>% arrange(desc(dealRating)) %>% head(10) %>%
       ggplot()+
