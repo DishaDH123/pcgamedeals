@@ -23,7 +23,7 @@ library(ggplot2)
 ```{r}
 
 get_active_stores <- function() {
-  #' @title Get the active store IDs and the Store names
+  #' @title Active store IDs and Store names
   #' 
   #' @description This function fetches all the active store IDs 
   #' and the store names in the API
@@ -54,74 +54,6 @@ get_active_stores <- function() {
     
 }
 
-y <- get_active_stores()
-y
-```
-
-
-```{r}
-response <- function(){
-cat("Please select a Store Number from below options \n")
-  
-  for (i in 1:nrow(y))
-    {
-    cat(y$storeName[i],":", y$storeID[i],"\n")
-    }
-  
-  val <- readline("Enter value here: ")
-  val <- as.integer(val)
-  cat("Select what you want from the below options:\n 1. Game within a budget\n2.Savings and current deal rating\n3.Games above a certain rating")
-  opt <- readline("Enter your choice : ")
-  opt <- as.integer(opt)
-  if(opt==1){
-      bud <- readline("Enter your budget: ")
-      bud <- as.integer(bud)
-      data <- get_game_deals_df(val,bud)
-      
-  }
-  else if(opt==2){
-      cat("Displaying top 10 games with high savings and their corresponding rating")
-      deal <- get_savings_deals_df(val)
-      options(repr.plot.width=10, repr.plot.height=25)
-      deal %>% arrange(desc(dealRating)) %>% head(10) %>%
-      ggplot()+
-      aes(
-        x=title,
-        y=savings,
-        color=dealRating
-      )+
-      geom_point()+
-      labs(x="Game",y='Rating',title='Top 10 games with high savings')+
-      theme_bw()+
-      theme(axis.text.x = element_text(angle = 60,hjust=1,face='bold',size=10),
-            axis.text.y = element_text(face='bold',size=10),
-            axis.title = element_text(face='bold',size=15),
-            plot.title = element_text(face='bold',size=20))
-  }
-  else if(opt==3){
-      rat <- readline("Enter the maximum percentage of rating required: ")
-      rat <- as.integer(rat)
-      ratings <- get_game_reviews_df(val,rat)
-      options(repr.plot.width=10, repr.plot.height=25)
-      ratings %>% arrange(desc(metacriticScore)) %>% head(10) %>%
-      ggplot() + aes(x=title,y=metacriticScore) + geom_bar(stat="identity") + 
-        ggtitle("Top 10 stores having expected reviews") +
-        xlab("Company names") + ylab("Ratings") + theme_bw()+
-        theme(axis.text.x = element_text(angle = 60,hjust=1,face='bold',size=10),
-            axis.text.y = element_text(face='bold',size=10),
-            axis.title = element_text(face='bold',size=15),
-            plot.title = element_text(face='bold',size=20))
-      
-  }
-  else {
-      cat("You did not enter a valid input\n")
-      break
-  }
-}
-```
-
-```{r}
-response()1
 ```
 
 
@@ -150,8 +82,8 @@ get_game_deals_df <- function(storeID, price_limit) {
     
 }
 
-#get_game_deals_df(3,20)
 ```
+
 ```{r}
 get_game_reviews_df <- function(storeID, rating) {
     
@@ -200,22 +132,128 @@ get_savings_deals_df <- function(storeID) {
 }
 ```
 
-
-
+```{r}
+#y <- get_active_stores()  
+#y
+```
 
 
 
 ```{r}
-is_active <- function (x) {
+response <- function(){
+  #' @title Interactive function to pull interesting game price data
+  #' 
+  #' @description This function first pulls currently active store data. This active 
+  #' store data is then given to the user to choose a store of interest. User then chooses a store from
+  #' the active list. Next, user is presented with one one of three key options: budget, 
+  #' deal rating and game rating. User choice on this section will dictate what data is returned from the API. 
+  #' Data is first returned in a data frame, and is used to create a visualization based on user choice. 
+  #' 
+  #' @return a plot based on user input
+  #' 
+  #' @examples
+  #' response()
+ 
+y <- get_active_stores()  
     
-    if (x %in% y$storeID){
-        print("ok")
+cat("Please select a Store Number from below options \n")
+ 
+  for (i in 1:nrow(y))
+    {
+    cat(y$storeName[i],":", y$storeID[i],"\n")
     }
-    else{
-        print("Nope!")
-    }
+  
+  val <- readline("Enter value here: ")
+  val <- as.integer(val)
+  cat("Select what you want from the below options:\n 1. Game within a budget\n2.Savings and current deal rating\n3.Games above a certain rating")
+  opt <- readline("Enter your choice : ")
+  opt <- as.integer(opt)
+  
+  if(opt==1){
+      bud <- readline("Enter your budget: ")
+      bud <- as.integer(bud)
+      data <- get_game_deals_df(val,bud)
+      options(repr.plot.width=10, repr.plot.height=5)
+      data %>% mutate(price_diff = normalPrice-salePrice) %>% arrange(desc(price_diff)) %>% head(10) %>%
+      ggplot() +
+      aes(
+        x = salePrice,
+        y = reorder(title,salePrice),
+        color = title,
+        fill = title,
+      ) +
+      geom_col() +
+      labs(x="Game Sale Price",
+           y='Game Titles',
+           title='Top 10 Games Under Personal Budget')+
+      theme_bw() +
+      theme(legend.position="none") +
+      scale_x_continuous(labels=scales::dollar_format()) +
+      theme(axis.text.x = element_text(angle = 60,hjust=1,face='bold',size=10),
+            axis.text.y = element_text(face='bold',size=10),
+            axis.title = element_text(face='bold',size=12),
+            plot.title = element_text(face='bold',size=12))
+      
+  }
+  else if(opt==2){
+      cat("Displaying top 10 games with high savings and their corresponding rating")
+      deal <- get_savings_deals_df(val)
+      options(repr.plot.width=10, repr.plot.height=25)
+      deal %>% arrange(desc(dealRating)) %>% head(10) %>%
+      ggplot()+
+      aes(
+        x=title,
+        y=savings,
+        color=dealRating
+      )+
+      geom_point()+
+      labs(x="Game",y='Rating',title='Top 10 games with high savings')+
+      theme_bw()+
+      theme(axis.text.x = element_text(angle = 60,hjust=1,face='bold',size=10),
+            axis.text.y = element_text(face='bold',size=10),
+            axis.title = element_text(face='bold',size=15),
+            plot.title = element_text(face='bold',size=20))
+  }
+  else if(opt==3){
+      rat <- readline("Enter the maximum percentage of rating required: ")
+      rat <- as.integer(rat)
+      ratings <- get_game_reviews_df(val,rat)
+      options(repr.plot.width=10, repr.plot.height=25)
+      ratings %>% arrange(desc(metacriticScore)) %>% head(10) %>%
+      ggplot() + aes(x=title,y=metacriticScore) + geom_bar(stat="identity") + 
+        ggtitle("Top 10 stores having expected reviews") +
+        xlab("Company names") + ylab("Ratings") + theme_bw()+
+        theme(axis.text.x = element_text(angle = 60,hjust=1,face='bold',size=10),
+            axis.text.y = element_text(face='bold',size=10),
+            axis.title = element_text(face='bold',size=15),
+            plot.title = element_text(face='bold',size=20))
+      
+  }
+  else {
+      cat("You did not enter a valid input\n")
+      break
+  }
 }
-is_active(4)
+
 
 
 ```
+
+```{r}
+response()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
