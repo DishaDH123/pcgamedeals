@@ -11,9 +11,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 library(httr)
-library(jsonlite)
-library(rjson)
-library(dplyr)
 library(tidyverse)
 library(ggplot2)
 ```
