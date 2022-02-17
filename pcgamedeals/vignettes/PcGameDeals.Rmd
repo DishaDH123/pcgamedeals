@@ -1,0 +1,26 @@
+---
+title: "PcGameDeals"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{PcGameDeals}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(pcgamedeals)
+```
+
+```{r}
+
+#get_game_reviews_df(2,80)
+response()
+
+```
