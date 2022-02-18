@@ -49,6 +49,11 @@ get_game_deals_df <- function(storeID, price_limit) {
   #' the percentage of savings on purchase and the rating of the deal.
   #' @examples get_game_deals_df(1,20)
 
+  if (!is.numeric(storeID))
+    stop("Cannot compute of a vector of characters.")
+
+  if (!is.numeric(price_limit))
+    stop("Cannot compute of a vector of characters.")
 
   url <- paste0("https://www.cheapshark.com/api/1.0/deals?storeID=", storeID, "&upperPrice=", price_limit)
 
@@ -89,6 +94,13 @@ get_game_reviews_df <- function(storeID, rating) {
   #' and the meta critic score of the game.
   #'The meta critic score will be above the one mentioned by the user.
   #' @examples get_game_reviews_df(31,80)
+
+  if (!is.numeric(storeID))
+    stop("Cannot compute of a vector of characters.")
+
+  if (!is.numeric(rating))
+    stop("Cannot compute of a vector of characters.")
+
   url <- paste0("https://www.cheapshark.com/api/1.0/deals?storeID=", storeID, "&metacritic=", rating)
 
   g <- GET(url)
@@ -123,6 +135,11 @@ get_deals_by_store_df <- function(storeID) {
   #' the store ID, the normal price of a game, the sale price on a game,
   #' the savings and the deal rating off the game.
   #' @examples get_deals_by_store_df(2)
+
+
+  if (!is.numeric(storeID))
+    stop("Cannot compute of a vector of characters.")
+
   url <- paste0("https://www.cheapshark.com/api/1.0/deals?storeID=", storeID)
 
   g <- GET(url)
@@ -134,7 +151,7 @@ get_deals_by_store_df <- function(storeID) {
 
   df <- deals %>%
     bind_rows%>%
-    select(title, storeID, normalPrice, salePrice, savings, dealRating)%>%
+    select(title,normalPrice, salePrice, savings, dealRating)%>%
     mutate(normalPrice = as.numeric(normalPrice),
            salePrice = as.numeric(salePrice),
            savings = as.numeric(savings),
@@ -169,13 +186,19 @@ response <- function(){
 
   val <- readline("Enter value here: ")
   val <- as.integer(val)
+  if (is.na(val))
+    stop("Store Number needs to be an integer")
   cat("Select what you want from the below options:\n 1. Game within a budget\n2.Savings and current deal rating\n3.Games above a certain rating")
   opt <- readline("Enter your choice : ")
   opt <- as.integer(opt)
+  if (is.na(opt))
+    stop("Choice needs to be a number from 1-3")
 
   if(opt==1){
     bud <- readline("Enter your budget: ")
     bud <- as.integer(bud)
+    if (is.na(bud))
+      stop("Budget value needs to be an integer")
     data <- get_game_deals_df(val,bud)
     options(repr.plot.width=10, repr.plot.height=5)
     data %>% mutate(price_diff = normalPrice-salePrice) %>% arrange(desc(price_diff)) %>% head(10) %>%
@@ -221,6 +244,8 @@ response <- function(){
   else if(opt==3){
     rat <- readline("Enter the maximum percentage of rating required: ")
     rat <- as.integer(rat)
+    if (is.na(rat))
+      stop("Rating value needs to be an integer")
     ratings <- get_game_reviews_df(val,rat)
     options(repr.plot.width=10, repr.plot.height=25)
     ratings %>% arrange(desc(metacriticScore)) %>% head(10) %>%
