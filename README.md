@@ -1,14 +1,9 @@
 # Data534 Final Project
 
 <!-- badges: start -->
+  [![R-CMD-check](https://github.com/DishaDH123/pcgamedeals/workflows/R-CMD-check/badge.svg)](https://github.com/DishaDH123/pcgamedeals/actions)
+  <!-- badges: end -->
 
-[![CRAN
-status](https://www.r-pkg.org/badges/version/dplyr)](https://cran.r-project.org/package=dplyr)
-[![R build
-status](https://github.com/tidyverse/dplyr/workflows/R-CMD-check/badge.svg)](https://github.com/tidyverse/dplyr/actions?workflow=R-CMD-check)
-[![Codecov test
-coverage](https://codecov.io/gh/tidyverse/dplyr/branch/main/graph/badge.svg)](https://app.codecov.io/gh/tidyverse/dplyr?branch=main)
-<!-- badges: end -->
 
 ## Overview
 
