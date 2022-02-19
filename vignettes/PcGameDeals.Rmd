@@ -14,16 +14,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(pcgamedeals)
-```
-
-```{r}
-
-#get_game_reviews_df(2,80)
-response()
-
-```
 
 ## Overview
 
@@ -37,11 +27,23 @@ Cheap Shark monitors PC game prices across a variety of vendors and platforms. H
 
 Running this function is recommended to check if your favorite store is being actively monitored. If it is, you should use the StoreID information provided from this function with some of the other functions in this package to find some great games!
 
+```{r}
+source("../R/pcgamedeals.R")
+get_active_stores()
+```
+
 ### get_game_deals_df()
 
 This function is designed to retrieve all the the current deals from a particular online store or game vendor under a certain price limit. This function takes two arguments, storeID and price_limit. You can use the get_active_stores() function from above to identify what stores are currently active and the associated storeID for the store you are interested in querying. The price_limit argument is the upper price range (based on the sale price, not the original price) that you wish to spend. Perfect for gamers on a budget!!
 
 The function will return a data frame with pre-selected 6 columns and all the results from that particular store and and under the specified price limits. The columns included in the data frame include game title, store ID, regular price, sale price, savings (as percentage off), and deal rating (as identified by Cheap Shark). 
+
+```{r}
+source("../R/pcgamedeals.R")
+game_data <- get_game_deals_df(1,20)
+game_data
+```
+
 
 ### get_game_reviews_df()
 
@@ -49,20 +51,45 @@ This function is designed to retrieve all the the current deals from a particula
 
 The function will return a data frame with 2 columns and all the results from that particular store that are above the rating threshold given by the user. The columns included in the data frame include game title and metacritic score. 
 
+```{r}
+source("../R/pcgamedeals.R")
+get_game_reviews_df(2,80)
+```
+
+
 ### get_deals_by_store_df()
 
 This function is designed to retrieve all the the current deals from a particular online store without any restrictions. This function takes one argument the storeID. It is recommended to use the get_active_stores() function from above to identify what stores are currently active and their names. This is a great function for gamers who want to see all the deals thier favorite store has to offer. 
 
-The function will return a data frame with pre-selected 6 columns and all the results from that particular store. The columns included in the data frame include game title, store ID, regular price, sale price, savings (as percentage off), and deal rating (as identified by Cheap Shark). 
+The function will return a data frame with pre-selected 5 columns and all the results from that particular store. The columns included in the data frame include game title, regular price, sale price, savings (as percentage off), and deal rating (as identified by Cheap Shark). It is sorted with the best deals rated first.
+
+
+```{r}
+source("../R/pcgamedeals.R")
+get_deals_by_store_df(11)
+```
 
 ### response()
 
 All these functions are awesome right? But what if you are feeling lazy and don't want to do any work?! Guess what... we can do all the heavy lifting for you! All you need to do is use the response function. It doesn't take any arguments to run, but instead will prompt you directly for any information that's needed, plus it will give you a cool graph in the end summarizing the top 10 results based on your input - sweet!!
 
+#### Example with showing games by budget
+```{r}
+source("../R/pcgamedeals.R")
+response()
+```
 
+#### Example with showing games by savings and deal rating
+```{r}
+source("../R/pcgamedeals.R")
+response()
+```
 
-
-
+#### Example with top 10 games by Metacritic rating
+```{r}
+source("../R/pcgamedeals.R")
+response()
+```
 
 
 
