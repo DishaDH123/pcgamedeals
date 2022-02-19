@@ -21,5 +21,5 @@ This function fetches the rating for
 all the games in a store
 }
 \examples{
-get_game_reviews_df(31,80)
+get_game_reviews_df(3,90)
 }

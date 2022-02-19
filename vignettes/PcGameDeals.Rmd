@@ -15,6 +15,10 @@ knitr::opts_chunk$set(
 ```
 
 
+```{r}
+library(pcgamedeals)
+```
+
 ## Overview
 
 This package is designed to allow users to more easily query the Cheap Shark API which collects information on current PC game deals. This API has a lot of information available, but most users may not be interested in all of the data available. This package is not exhaustive, but is intended to give users some useful custom functions that will allow them to access interesting consumer information quickly and easily. 
@@ -28,7 +32,6 @@ Cheap Shark monitors PC game prices across a variety of vendors and platforms. H
 Running this function is recommended to check if your favorite store is being actively monitored. If it is, you should use the StoreID information provided from this function with some of the other functions in this package to find some great games!
 
 ```{r}
-source("../R/pcgamedeals.R")
 get_active_stores()
 ```
 
@@ -39,7 +42,6 @@ This function is designed to retrieve all the the current deals from a particula
 The function will return a data frame with pre-selected 6 columns and all the results from that particular store and and under the specified price limits. The columns included in the data frame include game title, store ID, regular price, sale price, savings (as percentage off), and deal rating (as identified by Cheap Shark). 
 
 ```{r}
-source("../R/pcgamedeals.R")
 game_data <- get_game_deals_df(1,20)
 game_data
 ```
@@ -52,7 +54,6 @@ This function is designed to retrieve all the the current deals from a particula
 The function will return a data frame with 2 columns and all the results from that particular store that are above the rating threshold given by the user. The columns included in the data frame include game title and metacritic score. 
 
 ```{r}
-source("../R/pcgamedeals.R")
 get_game_reviews_df(2,80)
 ```
 
@@ -65,7 +66,6 @@ The function will return a data frame with pre-selected 5 columns and all the re
 
 
 ```{r}
-source("../R/pcgamedeals.R")
 get_deals_by_store_df(11)
 ```
 
@@ -75,20 +75,17 @@ All these functions are awesome right? But what if you are feeling lazy and don'
 
 #### Example with showing games by budget
 ```{r}
-source("../R/pcgamedeals.R")
-response()
+#response()
 ```
 
 #### Example with showing games by savings and deal rating
 ```{r}
-source("../R/pcgamedeals.R")
-response()
+#response()
 ```
 
 #### Example with top 10 games by Metacritic rating
 ```{r}
-source("../R/pcgamedeals.R")
-response()
+#response()
 ```
 
 

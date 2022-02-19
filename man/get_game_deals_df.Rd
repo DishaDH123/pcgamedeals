@@ -21,5 +21,5 @@ This function fetches all the details about a
 store's on going deals on games with the mentioned price limit
 }
 \examples{
-get_game_deals_df(1,20)
+get_game_deals_df(1,10)
 }

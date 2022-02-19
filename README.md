@@ -3,7 +3,6 @@
   [![R-CMD-check](https://github.com/DishaDH123/pcgamedeals/workflows/R-CMD-check/badge.svg)](https://github.com/DishaDH123/pcgamedeals/actions)
   <!-- badges: end -->
 
-
 ## Overview
 
 This package is designed to allow users to more easily query the Cheap Shark API which collects information on current PC game deals. This API has a lot of information available, but most users may not be interested in all of the data available. This package is not exhaustive, but is intended to give users some useful custom functions that will allow them to access interesting consumer information quickly and easily. 
