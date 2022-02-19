@@ -41,7 +41,7 @@ Feb 16:  Discussion and documentation
 -	Supported work on unit testing/package creation efforts by teammates (google/stack searches)
 -	Mostly focused on understanding documentation requirements
 -	Researched/viewed popular R packages for example vignettes (dyplr, lubridate, testhat) to see examples of how vignettes are styled 
--	Wrote a base description in plain English for each function to serve as base for [vignette](https://github.com/DishaDH123/pcgamedeals/commit/e08c938c9538a145f23f5ec09ff25f297da9c782
+-	Wrote a base description in plain English for each function to serve as base for [vignette](https://github.com/DishaDH123/pcgamedeals/commit/e08c938c9538a145f23f5ec09ff25f297da9c782)
 -	Explained to teammates would not be able to work on project on Thursday due to other commitments
 
 Feb 17:  No contributions from me on this day 
