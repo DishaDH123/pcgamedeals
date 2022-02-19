@@ -47,7 +47,7 @@ get_game_deals_df <- function(storeID, price_limit) {
   #' @return A dataframe containing a store's title, ID,
   #' the actual price of the game, the sale price of the game,
   #' the percentage of savings on purchase and the rating of the deal.
-  #' @examples get_game_deals_df(1,20)
+  #' @examples get_game_deals_df(1,10)
 
   if (!is.numeric(storeID))
     stop("Cannot compute of a vector of characters.")
@@ -93,7 +93,7 @@ get_game_reviews_df <- function(storeID, rating) {
   #' @return A dataframe containing the name of the game
   #' and the meta critic score of the game.
   #'The meta critic score will be above the one mentioned by the user.
-  #' @examples get_game_reviews_df(31,80)
+  #' @examples get_game_reviews_df(3,90)
 
   if (!is.numeric(storeID))
     stop("Cannot compute of a vector of characters.")
@@ -200,16 +200,17 @@ response <- function(){
     if (is.na(bud))
       stop("Budget value needs to be an integer")
     data <- get_game_deals_df(val,bud)
-    options(repr.plot.width=10, repr.plot.height=5)
+    options(repr.plot.width=12, repr.plot.height=5)
     data %>% mutate(price_diff = normalPrice-salePrice) %>% arrange(desc(price_diff)) %>% head(10) %>%
       ggplot() +
       aes(
         x = salePrice,
         y = reorder(title,salePrice),
-        color = title,
+        label = salePrice,
         fill = title,
       ) +
       geom_col() +
+      geom_label() +
       labs(x="Game Sale Price",
            y='Game Titles',
            title='Top 10 Games Under Personal Budget')+
@@ -225,16 +226,16 @@ response <- function(){
   else if(opt==2){
     cat("Displaying top 10 games with high savings and their corresponding rating")
     deal <- get_deals_by_store_df(val)
-    options(repr.plot.width=10, repr.plot.height=25)
+    options(repr.plot.width=12, repr.plot.height=25)
     deal %>% arrange(desc(dealRating)) %>% head(10) %>%
       ggplot()+
       aes(
-        x=title,
+        x=reorder(title,desc(dealRating)),
         y=savings,
         color=dealRating
       )+
       geom_point()+
-      labs(x="Game",y='Rating',title='Top 10 games with high savings')+
+      labs(x="Game Title",y='Metacritic Rating',title=' Top 10 Games sorted by Deal Rating')+
       theme_bw()+
       theme(axis.text.x = element_text(angle = 60,hjust=1,face='bold',size=10),
             axis.text.y = element_text(face='bold',size=10),
@@ -242,22 +243,25 @@ response <- function(){
             plot.title = element_text(face='bold',size=20))
   }
   else if(opt==3){
-    rat <- readline("Enter the maximum percentage of rating required: ")
+    rat <- readline("Enter the lowest rating (out of 100) you want to see:")
     rat <- as.integer(rat)
     if (is.na(rat))
       stop("Rating value needs to be an integer")
     ratings <- get_game_reviews_df(val,rat)
-    options(repr.plot.width=10, repr.plot.height=25)
+    options(repr.plot.width=12, repr.plot.height=25)
     ratings %>% arrange(desc(metacriticScore)) %>% head(10) %>%
-      ggplot() + aes(x=title,y=metacriticScore) + geom_bar(stat="identity") +
-      ggtitle("Top 10 stores having expected reviews") +
-      xlab("Company names") + ylab("Ratings") + theme_bw()+
+      ggplot() + 
+      aes(x= reorder(title, desc(metacriticScore)), y= metacriticScore, label= metacriticScore) + 
+      geom_bar(stat="identity") +
+      geom_label() +
+      ggtitle("Top 10 Rated Games") +
+      xlab("Game Titles") + ylab("Ratings") + 
+      theme_bw() +
       theme(axis.text.x = element_text(angle = 60,hjust=1,face='bold',size=10),
             axis.text.y = element_text(face='bold',size=10),
             axis.title = element_text(face='bold',size=15),
             plot.title = element_text(face='bold',size=20))
-
   }
-
+  
 }
 
