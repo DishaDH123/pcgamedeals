@@ -58,4 +58,3 @@
 
 - As per rubric added inline comments to the code , and created a pull request to merge it with main branch,[Inline comments](https://github.com/Neetz78/pcgamedeals-1/tree/e7817153911bb22d18d2d4abf069ae18b4f1f5a2)
 - Package is almost completed, need to discuss with team members tomorrow and submit it on canvas.
-![image](https://user-images.githubusercontent.com/70648393/154866113-5168ec74-c653-4d98-83fe-856219c59308.png)
