@@ -15,22 +15,22 @@ get_active_stores <- function() {
   #' @examples get_active_stores()
 
 
-  stores <- GET("https://www.cheapshark.com/api/1.0/stores")
+  stores <- GET("https://www.cheapshark.com/api/1.0/stores") # Using GET function to colect data from cheapshark api.
 
   if (status_code(stores) != 200) {
-    stop(paste("There was an error with the API. The reponse status is:", status_code(g)))
+    stop(paste("There was an error with the API. The reponse status is:", status_code(g))) #Checking if the status of the request GET query was successful or not
   }
 
-  s <- content(stores, "parsed")
+  s <- content(stores, "parsed") # parsing the received data
 
-  df <- s %>%
+  df <- s %>%  #filtering and modifying the data to find only active stores,and selecting only storeName and storeID
     bind_rows %>%
     filter(isActive == 1) %>%
     select(storeName, storeID) %>%
     distinct() %>%
     mutate(storeID = as.numeric(storeID))
 
-  df
+  df #returns the dataframe containing storeName and storeID
 
 }
 #' @export
@@ -50,21 +50,21 @@ get_game_deals_df <- function(storeID, price_limit) {
   #' @examples get_game_deals_df(1,10)
 
   if (!is.numeric(storeID))
-    stop("Cannot compute of a vector of characters.")
+    stop("Cannot compute of a vector of characters.") # To check if the paramters passed is numeric or not
 
   if (!is.numeric(price_limit))
-    stop("Cannot compute of a vector of characters.")
+    stop("Cannot compute of a vector of characters.") # To check if the paramters passed is numeric or not
 
-  url <- paste0("https://www.cheapshark.com/api/1.0/deals?storeID=", storeID, "&upperPrice=", price_limit)
+  url <- paste0("https://www.cheapshark.com/api/1.0/deals?storeID=", storeID, "&upperPrice=", price_limit) # Using GET function to colect data from cheapshark api, we also pass paramters such as stoerID and upperprice to obtain game deals from a particular store within given budget.
 
   g <- GET(url)
   if (status_code(g) != 200) {
-    stop(paste("There was an error with the API. The reponse status is:", status_code(g)))
+    stop(paste("There was an error with the API. The reponse status is:", status_code(g))) #Checking if the status of the request GET query was successful or not.
   }
 
-  deals <- content(g, "parsed")
+  deals <- content(g, "parsed") # parsing the received data
 
-  df <- deals %>%
+  df <- deals %>%   #filtering and selecting only title,storeID,normalPrice,salePrice,savings,dealRating
     bind_rows%>%
     select(title, storeID, normalPrice, salePrice, savings, dealRating)%>%
     mutate(normalPrice = as.numeric(normalPrice),
@@ -73,7 +73,7 @@ get_game_deals_df <- function(storeID, price_limit) {
            dealRating = as.numeric(dealRating),
            storeID = as.numeric(storeID))
 
-  df
+  df #returns the dataframe containing storeName and storeID
 
 }
 
@@ -96,26 +96,26 @@ get_game_reviews_df <- function(storeID, rating) {
   #' @examples get_game_reviews_df(3,90)
 
   if (!is.numeric(storeID))
-    stop("Cannot compute of a vector of characters.")
+    stop("Cannot compute of a vector of characters.") # To check if the paramters passed is numeric or not
 
   if (!is.numeric(rating))
-    stop("Cannot compute of a vector of characters.")
+    stop("Cannot compute of a vector of characters.") # To check if the paramters passed is numeric or not
 
-  url <- paste0("https://www.cheapshark.com/api/1.0/deals?storeID=", storeID, "&metacritic=", rating)
+  url <- paste0("https://www.cheapshark.com/api/1.0/deals?storeID=", storeID, "&metacritic=", rating) # Using GET function to colect data from cheapshark api, we pass paramters such as storeID and rating to obtain game deals from a particular store and rating above of how much is required.
 
   g <- GET(url)
   if (status_code(g) != 200) {
-    stop(paste("There was an error with the API. The reponse status is:", status_code(g)))
+    stop(paste("There was an error with the API. The reponse status is:", status_code(g))) #Checking if the status of the request GET query was successful or not.
   }
 
-  deals <- content(g, "parsed")
+  deals <- content(g, "parsed")  # parsing the received data
 
-  df <- deals %>%
+  df <- deals %>%   #filtering and selecting only title,metacriticscore
     bind_rows%>%
     select(title, metacriticScore)%>%
     mutate(metacriticScore = as.numeric(metacriticScore))
 
-  return(df)
+  return(df)  #returns the dataframe containing storeName and storeID
 
 }
 
@@ -138,18 +138,18 @@ get_deals_by_store_df <- function(storeID) {
 
 
   if (!is.numeric(storeID))
-    stop("Cannot compute of a vector of characters.")
+    stop("Cannot compute of a vector of characters.")  # To check if the paramters passed is numeric or not
 
-  url <- paste0("https://www.cheapshark.com/api/1.0/deals?storeID=", storeID)
+  url <- paste0("https://www.cheapshark.com/api/1.0/deals?storeID=", storeID) # Using GET function to colect data from cheapshark api,we pass storeID in the URL to retrive stores with best deals.
 
   g <- GET(url)
   if (status_code(g) != 200) {
-    stop(paste("There was an error with the API. The reponse status is:", status_code(g)))
+    stop(paste("There was an error with the API. The reponse status is:", status_code(g)))  #Checking if the status of the request GET query was successful or not.
   }
 
-  deals <- content(g, "parsed")
+  deals <- content(g, "parsed")  # parsing the received data
 
-  df <- deals %>%
+  df <- deals %>%    #filtering and selecting only title,normalPrice,salePrice,savings and dealRating
     bind_rows%>%
     select(title,normalPrice, salePrice, savings, dealRating)%>%
     mutate(normalPrice = as.numeric(normalPrice),
@@ -157,7 +157,7 @@ get_deals_by_store_df <- function(storeID) {
            savings = as.numeric(savings),
            dealRating = as.numeric(dealRating))
 
-  df
+  df   #returns the dataframe containing storeName and storeID
 
 }
 
@@ -175,89 +175,89 @@ response <- function(){
   #'
 
 
-  y <- get_active_stores()
+  y <- get_active_stores() #calling function get_active_stores to obtain current active stores.
 
-  cat("Please select a Store Number from below options \n")
+  cat("Please select a Store Number from below options \n") # Taking user input
 
   for (i in 1:nrow(y))
   {
-    cat(y$storeName[i],":", y$storeID[i],"\n")
+    cat(y$storeName[i],":", y$storeID[i],"\n")  # Displpaying all active stores for user to make a choice from.
   }
 
-  val <- readline("Enter value here: ")
-  val <- as.integer(val)
-  if (is.na(val))
+  val <- readline("Enter value here: ") #Taking inut from user
+  val <- as.integer(val) #Converting it into a integer
+  if (is.na(val))  #Checking if the user entered an integer and not a string or character.
     stop("Store Number needs to be an integer")
   cat("Select what you want from the below options:\n 1. Game within a budget\n2.Savings and current deal rating\n3.Games above a certain rating")
-  opt <- readline("Enter your choice : ")
-  opt <- as.integer(opt)
+  opt <- readline("Enter your choice : ")  #Taking inut from user
+  opt <- as.integer(opt)   #Converting it into a integer
   if (is.na(opt))
-    stop("Choice needs to be a number from 1-3")
+    stop("Choice needs to be a number from 1-3")    #Checking if the user entered an integer and not a string or character.
 
-  if(opt==1){
-    bud <- readline("Enter your budget: ")
-    bud <- as.integer(bud)
-    if (is.na(bud))
+  if(opt==1){   #if user choice o[ption 1 
+    bud <- readline("Enter your budget: ") #taking user input
+    bud <- as.integer(bud) #converting into an integer
+    if (is.na(bud))    #Checking if the user entered an integer and not a string or character.
       stop("Budget value needs to be an integer")
-    data <- get_game_deals_df(val,bud)
-    options(repr.plot.width=12, repr.plot.height=5)
+    data <- get_game_deals_df(val,bud) #calling the game deals function
+    options(repr.plot.width=12, repr.plot.height=5) #plotting the Top 10 games under personal budget
     data %>% mutate(price_diff = normalPrice-salePrice) %>% arrange(desc(price_diff)) %>% head(10) %>%
       ggplot() +
-      aes(
+      aes(   #setting x and y values
         x = salePrice,
         y = reorder(title,salePrice),
         label = salePrice,
         fill = title,
       ) +
-      geom_col() +
-      geom_label() +
-      labs(x="Game Sale Price",
+      geom_col() + #choosing column plot
+      geom_label() + #adding labels
+      labs(x="Game Sale Price", 
            y='Game Titles',
            title='Top 10 Games Under Personal Budget')+
-      theme_bw() +
-      theme(legend.position="none") +
-      scale_x_continuous(labels=scales::dollar_format()) +
-      theme(axis.text.x = element_text(angle = 60,hjust=1,face='bold',size=10),
+      theme_bw() +  #removing the background grid.
+      theme(legend.position="none") + #removing the legend
+      scale_x_continuous(labels=scales::dollar_format()) + #Adding $ sign on the x axis as it contains sale price.
+      theme(axis.text.x = element_text(angle = 60,hjust=1,face='bold',size=10), #setting up theme for x and y axis elements.
             axis.text.y = element_text(face='bold',size=10),
             axis.title = element_text(face='bold',size=12),
             plot.title = element_text(face='bold',size=12))
 
   }
-  else if(opt==2){
-    cat("Displaying top 10 games with high savings and their corresponding rating")
-    deal <- get_deals_by_store_df(val)
-    options(repr.plot.width=12, repr.plot.height=25)
+  else if(opt==2){ #if user choice o[ption 2
+    cat("Displaying top 10 games with high savings and their corresponding rating")  #taking user input
+    deal <- get_deals_by_store_df(val)   #calling the get deals by store function
+    options(repr.plot.width=12, repr.plot.height=25)   #plotting the Top 10 games under personal budget
     deal %>% arrange(desc(dealRating)) %>% head(10) %>%
       ggplot()+
-      aes(
+      aes(  #setting x and y values
         x=reorder(title,desc(dealRating)),
         y=savings,
         color=dealRating
       )+
-      geom_point()+
-      labs(x="Game Title",y='Metacritic Rating',title=' Top 10 Games sorted by Deal Rating')+
-      theme_bw()+
-      theme(axis.text.x = element_text(angle = 60,hjust=1,face='bold',size=10),
+      geom_point()+  #choosing column plot
+      labs(x="Game Title",y='Metacritic Rating',title=' Top 10 Games sorted by Deal Rating')+  #adding labels
+      theme_bw()+  #removing the background grid.
+      theme(axis.text.x = element_text(angle = 60,hjust=1,face='bold',size=10),  #setting up theme for x and y axis elements.
             axis.text.y = element_text(face='bold',size=10),
             axis.title = element_text(face='bold',size=15),
             plot.title = element_text(face='bold',size=20))
   }
-  else if(opt==3){
-    rat <- readline("Enter the lowest rating (out of 100) you want to see:")
-    rat <- as.integer(rat)
-    if (is.na(rat))
+  else if(opt==3){  #if user choice o[ption 2
+    rat <- readline("Enter the lowest rating (out of 100) you want to see:")  #taking user input
+    rat <- as.integer(rat)  #converting into an integer
+    if (is.na(rat))  #Checking if the user entered an integer and not a string or character.
       stop("Rating value needs to be an integer")
     ratings <- get_game_reviews_df(val,rat)
-    options(repr.plot.width=12, repr.plot.height=25)
+    options(repr.plot.width=12, repr.plot.height=25)  #plotting the Top 10 games under personal budget
     ratings %>% arrange(desc(metacriticScore)) %>% head(10) %>%
       ggplot() + 
-      aes(x= reorder(title, desc(metacriticScore)), y= metacriticScore, label= metacriticScore) + 
-      geom_bar(stat="identity") +
-      geom_label() +
+      aes(x= reorder(title, desc(metacriticScore)), y= metacriticScore, label= metacriticScore) +  #setting x and y values
+      geom_bar(stat="identity") + #choosing column plot
+      geom_label() +  #adding labels
       ggtitle("Top 10 Rated Games") +
       xlab("Game Titles") + ylab("Ratings") + 
-      theme_bw() +
-      theme(axis.text.x = element_text(angle = 60,hjust=1,face='bold',size=10),
+      theme_bw() + #removing the background grid.
+      theme(axis.text.x = element_text(angle = 60,hjust=1,face='bold',size=10),  #setting up theme for x and y axis elements
             axis.text.y = element_text(face='bold',size=10),
             axis.title = element_text(face='bold',size=15),
             plot.title = element_text(face='bold',size=20))
