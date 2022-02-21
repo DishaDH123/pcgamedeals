@@ -16,17 +16,20 @@ This package is designed to allow users to more easily query the Cheap Shark API
 
 You can learn more about these in `vignette("PcGameDeals")
 
-##Installation 
+## Installation 
 
 The easiest way to get PCGameDeals is to simply install in your console. 
-`install.packages("dplyr")`
+
 `library(devtools)`
 `install_github("DishaDH123/pcgamedeals")`
 
-##Usage
+## Usage
 
-We have to call the response function to use this package.
-Once we call the response function, we can see the below workflow:
+Users have the option of using any of the individual functions in this package to retrieve information. The information returned to the user will be in the form of a dataframe. 
+
+For a fully automated experience, users can call the response() function. 
+
+Once the response function is called, there are several user determined options to choose from shown below:
 
 First the user is asked to choose from the given list of stores and is prompted to enter the store ID.
 ![First output](/assets/1.png)
@@ -42,5 +45,4 @@ On choosing option 3, the user is asked to enter the percentage savings, and the
 ![Fourth output](/assets/4.png)
 
 ---
-## Link needs to be updated to our project once we are ready
 Please note that this project is released with a [Contributor Code of Conduct](https://github.com/DishaDH123/pcgamedeals/blob/main/CODE_OF_CONDUCT.md).
