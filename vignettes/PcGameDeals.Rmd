@@ -71,7 +71,7 @@ get_deals_by_store_df(11)
 
 ### response()
 
-All these functions are awesome right? But what if you are feeling lazy and don't want to do any work?! Guess what... we can do all the heavy lifting for you! All you need to do is use the response function. It doesn't take any arguments to run, but instead will prompt you directly for any information that's needed, plus it will give you a cool graph in the end summarizing the top 10 results based on your input - sweet!!
+All these functions are awesome right? But what if you are feeling lazy and don't want to do any work?! Guess what... we can do all the heavy lifting for you! All you need to do is use the response function. It doesn't take any arguments to run, but instead will prompt you directly for any information that's needed, plus it will give you a cool graph in the end summarizing the top 10 results based on your input - sweet!! If you want to see details on how this works, please see the ReadMe.md. 
 
 
 
