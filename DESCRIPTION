@@ -1,11 +1,12 @@
 Package: pcgamedeals
 Type: Package
-Title: What the Package Does (Title Case)
+Title: PC Game Deal Information 
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Authors: Neethu Gopalakrishna, Disha Divakar Holla and Kristy Phipps
+Maintainer: Kristy Phipps <phipps.kristy@gmail.com>
+Description: This package allows for easy direct querying of the Deal Shark API. 
+    There are 4 main functions that return information to the user as a dataframe for further personal exploration. 
+    There is a main function that requests user input and will deliver a fully realized response based on users responses. 
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
