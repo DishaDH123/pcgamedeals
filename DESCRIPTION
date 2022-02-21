@@ -6,7 +6,7 @@ Authors: Neethu Gopalakrishna, Disha Divakar Holla and Kristy Phipps
 Maintainer: Kristy Phipps <phipps.kristy@gmail.com>
 Description: This package allows for easy direct querying of the Deal Shark API. 
     There are 4 main functions that return information to the user as a dataframe for further personal exploration. 
-    There is a main function that requests user input and will deliver a fully relaized response based on users responses. 
+    There is a main function that requests user input and will deliver a fully realized response based on users responses. 
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
